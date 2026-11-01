@@ -29,7 +29,7 @@ python tests/test_app.py
 Prototype: data is stored per browser, no admin login, no SMS notifications. A server database, authentication and notifications are listed as future work in the report (`docs/Project_Report.pdf`).
 
 ## Author
-Sourav – B.Tech Computer Science & Engineering
+Sourav Barman – B.Tech Computer Science & Engineering
 
 ## License
 MIT
