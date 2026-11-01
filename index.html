@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Apna Bazaar – Local Grocery</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5EF;--sf:#fff;--ink:#1D2B24;--mut:#5d6b63;--ln:#d9e1d6;--lf:#2F7D4F;--lfk:#fff;--tag:#F2C230;--tagk:#2a2200;--red:#C73E36;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111813;--sf:#1a241d;--ink:#e8efe9;--mut:#9aa99f;--ln:#2b3a30;--lf:#5BBF84;--lfk:#0c1a11;--red:#ef7a72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111813;--sf:#1a241d;--ink:#e8efe9;--mut:#9aa99f;--ln:#2b3a30;--lf:#5BBF84;--lfk:#0c1a11;--red:#ef7a72;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 'DM Sans',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','DM Sans',sans-serif;margin:0}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--ln)}
+h1{font-size:22px;font-weight:800}nav{display:flex;gap:6px}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--ln);background:var(--sf);border-radius:8px;padding:7px 12px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lf);outline-offset:2px}
+.on,.pri{background:var(--lf);color:var(--lfk);border-color:var(--lf);font-weight:700}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.lay{display:grid;grid-template-columns:1fr 330px;gap:20px;align-items:start}
+@media(max-width:800px){.lay{grid-template-columns:minmax(0,1fr)}}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0}.chips button{white-space:nowrap;border-radius:99px}
+input,select{background:var(--sf);border:1px solid var(--ln);border-radius:8px;padding:8px 10px;width:100%}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.card b{font-weight:700}.mut{color:var(--mut);font-size:13px}
+.tag{align-self:flex-start;background:var(--tag);color:var(--tagk);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:19px;padding:3px 12px 3px 20px;clip-path:polygon(10px 0,100% 0,100% 100%,10px 100%,0 50%);background-image:radial-gradient(circle at 9px 50%,var(--sf) 2.5px,transparent 3px)}
+.low{color:var(--red);font-weight:700;font-size:13px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:auto}.qty span{min-width:20px;text-align:center;font-weight:700}
+.box{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:14px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:8px;padding:3px 0}.fl{display:grid;gap:8px;margin-top:10px}
+.seg{display:flex;gap:6px}.seg button{flex:1}
+.alert{background:color-mix(in srgb,var(--red) 14%,var(--sf));border:1px solid var(--red);border-radius:10px;padding:10px 14px;margin-bottom:14px}
+.steps{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}.steps i{font-style:normal;font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--ln);color:var(--mut)}.steps i.d{background:var(--lf);color:var(--lfk);border-color:var(--lf)}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:560px}th,td{text-align:left;padding:6px;border-bottom:1px solid var(--ln)}td input{width:80px}
+.add{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;align-items:end}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:9}
+</style></head><body>
+<header><h1>Apna Bazaar</h1><nav><button data-a="view" data-v="shop" id="n1">Shop</button><button data-a="view" data-v="admin" id="n2">Store admin</button></nav></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),K='apna-bazaar-v1',LOW=10;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+const seed=[['Basmati rice','Staples',118,'1 kg',40],['Toor dal','Staples',165,'1 kg',25],['Atta','Staples',245,'5 kg',18],['Mustard oil','Staples',175,'1 L',30],['Sugar','Staples',46,'1 kg',50],['Tomatoes','Produce',30,'500 g',35],['Potatoes','Produce',35,'1 kg',60],['Onions','Produce',42,'1 kg',9],['Bananas','Produce',60,'dozen',20],['Milk','Dairy',29,'500 ml',45],['Eggs','Dairy',84,'dozen',8],['Paneer','Dairy',90,'200 g',6],['Tea leaves','Beverages',130,'250 g',22],['Glucose biscuits','Snacks',20,'pack',70]];
+let S;try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!S||!S.products)S={products:seed.map((a,i)=>({id:i+1,name:a[0],cat:a[1],price:a[2],unit:a[3],stock:a[4]})),orders:[],pid:100,oid:1001};
+const FLOW={delivery:['Placed','Packed','Out for delivery','Delivered'],pickup:['Placed','Packed','Ready for pickup','Picked up']};
+let cart={},view='shop',tab='inv',cat='All',q='',mode='delivery',me={name:'',phone:'',addr:'',slot:'Morning 8–11'};
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+function say(t){const d=document.createElement('div');d.id='toast';d.textContent=t;document.body.append(d);setTimeout(()=>d.remove(),2800)}
+const lines=()=>Object.entries(cart).map(([id,n])=>({p:S.products.find(p=>p.id==id),n})).filter(l=>l.p&&l.n>0);
+const calc=()=>{const sub=lines().reduce((a,l)=>a+l.p.price*l.n,0),fee=mode==='delivery'&&sub>0&&sub<500?30:0;return{sub,fee,total:sub+fee}};
+function render(){
+ $('#n1').className=view==='shop'?'on':'';$('#n2').className=view==='admin'?'on':'';
+ $('#app').innerHTML=view==='shop'?shop():admin();if(view==='shop')grid();
+}
+function shop(){
+ const cats=['All',...new Set(S.products.map(p=>p.cat))],L=lines(),c=calc();
+ const mine=me.phone?S.orders.filter(o=>o.cust.phone===me.phone):[];
+ return `<div class="lay"><section><input id="q" placeholder="Search groceries" value="${esc(q)}" aria-label="Search groceries"><div class="chips">${cats.map(x=>`<button class="${x===cat?'on':''}" data-a="cat" data-v="${esc(x)}">${esc(x)}</button>`).join('')}</div><div class="g" id="grid"></div></section>
+ <aside id="basket"><div class="box"><h2>Your basket</h2>${L.length?L.map(l=>`<div class="row"><span>${esc(l.p.name)} × ${l.n}</span><b>${inr(l.p.price*l.n)}</b></div>`).join(''):'<p class="mut">Basket is empty. Add items from the list.</p>'}
+ <div class="seg fl"><button class="${mode==='delivery'?'on':''}" data-a="mode" data-v="delivery">Home delivery</button><button class="${mode==='pickup'?'on':''}" data-a="mode" data-v="pickup">Store pickup</button></div>
+ <div class="fl"><input data-me="name" placeholder="Your name" value="${esc(me.name)}"><input data-me="phone" inputmode="numeric" maxlength="10" placeholder="Phone (10 digits)" value="${esc(me.phone)}">
+ ${mode==='delivery'?`<input data-me="addr" placeholder="Delivery address" value="${esc(me.addr)}">`:''}
+ <select data-me="slot" aria-label="Time slot">${['Morning 8–11','Afternoon 12–3','Evening 5–8'].map(s=>`<option ${s===me.slot?'selected':''}>${s}</option>`).join('')}</select></div>
+ <div class="row" style="margin-top:10px"><span>Items</span><span>${inr(c.sub)}</span></div><div class="row"><span>${mode==='delivery'?'Delivery (free over ₹500)':'Pickup'}</span><span>${inr(c.fee)}</span></div><div class="row"><b>Total</b><b>${inr(c.total)}</b></div>
+ <button class="pri" style="width:100%;margin-top:8px" data-a="place" ${L.length?'':'disabled'}>Place order</button></div>
+ ${mine.length?`<div class="box"><h3>Your orders</h3>${mine.slice().reverse().map(o=>`<div style="margin-top:10px"><div class="row"><b>#${o.id}</b><span>${inr(o.total)}</span></div><div class="mut">${esc(o.time)} · ${o.mode==='delivery'?'Delivery':'Pickup'}</div>${o.status==='Cancelled'?'<div class="low">Cancelled</div>':`<div class="steps">${FLOW[o.mode].map((s,i)=>`<i class="${i<=FLOW[o.mode].indexOf(o.status)?'d':''}">${s}</i>`).join('')}</div>`}</div>`).join('')}</div>`:''}
+ </aside></div>`;
+}
+function grid(){
+ const f=S.products.filter(p=>(cat==='All'||p.cat===cat)&&p.name.toLowerCase().includes(q.toLowerCase()));
+ $('#grid').innerHTML=f.length?f.map(p=>`<div class="card"><b>${esc(p.name)}</b><span class="mut">${esc(p.unit)}</span><span class="tag">${inr(p.price)}</span>
+ ${p.stock<=0?'<span class="low">Out of stock</span>':p.stock<=LOW?`<span class="low">Only ${p.stock} left</span>`:'<span class="mut">In stock</span>'}
+ <div class="qty">${cart[p.id]?`<button data-a="sub" data-id="${p.id}" aria-label="Remove one">−</button><span>${cart[p.id]}</span>`:''}<button class="${cart[p.id]?'':'pri'}" data-a="add" data-id="${p.id}" ${p.stock<=0?'disabled':''} aria-label="Add ${esc(p.name)}">${cart[p.id]?'+':'Add to basket'}</button></div></div>`).join(''):'<p class="mut">No products match. Try another search or category.</p>';
+}
+function admin(){
+ const low=S.products.filter(p=>p.stock<=LOW),open=S.orders.filter(o=>!['Delivered','Picked up','Cancelled'].includes(o.status)).length;
+ const tabs=[['inv','Inventory'],['ord',`Orders (${open} open)`],['cus','Customers']];
+ let body='';
+ if(tab==='inv')body=`<div class="box"><h3>Add product</h3><div class="add"><input id="an" placeholder="Name"><input id="ac" placeholder="Category"><input id="ap" type="number" min="1" placeholder="Price ₹"><input id="au" placeholder="Unit (1 kg)"><input id="as" type="number" min="0" placeholder="Stock"><button class="pri" data-a="newp">Add product</button></div></div>
+ <div class="box tw"><table><tr><th>Product</th><th>Category</th><th>Price ₹</th><th>Stock</th><th></th></tr>${S.products.map(p=>`<tr><td>${esc(p.name)} <span class="mut">${esc(p.unit)}</span></td><td>${esc(p.cat)}</td><td><input type="number" min="1" value="${p.price}" data-c="price" data-id="${p.id}" aria-label="Price"></td><td><input type="number" min="0" value="${p.stock}" data-c="stock" data-id="${p.id}" aria-label="Stock">${p.stock<=LOW?' <span class="low">Low</span>':''}</td><td><button data-a="del" data-id="${p.id}">Remove</button></td></tr>`).join('')}</table></div>`;
+ if(tab==='ord')body=S.orders.length?S.orders.slice().reverse().map(o=>`<div class="box"><div class="row"><h3>#${o.id} · ${esc(o.cust.name)}</h3><b>${inr(o.total)}</b></div><div class="mut">${esc(o.time)} · ${o.mode==='delivery'?'Delivery to '+esc(o.cust.addr):'Pickup'} · ${esc(o.cust.slot)} · ${esc(o.cust.phone)}</div><p>${o.items.map(i=>esc(i.name)+' × '+i.qty).join(', ')}</p>
+ ${o.status==='Cancelled'?'<span class="low">Cancelled</span>':`<select data-c="status" data-id="${o.id}" aria-label="Order status">${[...FLOW[o.mode],...(o.status===FLOW[o.mode][3]?[]:['Cancelled'])].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select>`}</div>`).join(''):'<p class="mut">No orders yet. Orders placed in the shop appear here.</p>';
+ if(tab==='cus'){const m={};S.orders.filter(o=>o.status!=='Cancelled').forEach(o=>{const c=m[o.cust.phone]=m[o.cust.phone]||{n:o.cust.name,a:o.cust.addr,t:0,k:0};c.t+=o.total;c.k++;if(o.cust.addr)c.a=o.cust.addr});
+  const e=Object.entries(m);body=e.length?`<div class="box tw"><table><tr><th>Name</th><th>Phone</th><th>Address</th><th>Orders</th><th>Spent</th></tr>${e.map(([p,c])=>`<tr><td>${esc(c.n)}</td><td>${esc(p)}</td><td>${esc(c.a||'—')}</td><td>${c.k}</td><td>${inr(c.t)}</td></tr>`).join('')}</table></div>`:'<p class="mut">Customer records appear after the first order.</p>'}
+ return `${low.length?`<div class="alert"><b>Low stock:</b> ${low.map(p=>`${esc(p.name)} (${p.stock})`).join(', ')}</div>`:''}<div class="seg" style="margin-bottom:14px">${tabs.map(t=>`<button class="${t[0]===tab?'on':''}" data-a="tab" data-v="${t[0]}">${t[1]}</button>`).join('')}</div>${body}`;
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=+b.dataset.id,v=b.dataset.v;
+ if(a==='view'){view=v;render()}
+ else if(a==='cat'){cat=v;render()}
+ else if(a==='tab'){tab=v;render()}
+ else if(a==='mode'){mode=v;render()}
+ else if(a==='add'){const p=S.products.find(p=>p.id===id);if((cart[id]||0)<p.stock)cart[id]=(cart[id]||0)+1;else say('Only '+p.stock+' available');render()}
+ else if(a==='sub'){cart[id]--;if(cart[id]<=0)delete cart[id];render()}
+ else if(a==='del'){S.products=S.products.filter(p=>p.id!==id);save();render()}
+ else if(a==='newp'){const n=$('#an').value.trim(),c=$('#ac').value.trim(),p=+$('#ap').value,u=$('#au').value.trim(),s=+$('#as').value;
+  if(!n||!c||!(p>0)||!u||s<0||$('#as').value==='')return say('Fill name, category, price, unit and stock');
+  S.products.push({id:S.pid++,name:n,cat:c,price:p,unit:u,stock:s});save();render();say('Product added')}
+ else if(a==='place'){
+  const L=lines(),c=calc();
+  if(!me.name.trim())return say('Enter your name');
+  if(!/^\d{10}$/.test(me.phone))return say('Enter a 10-digit phone number');
+  if(mode==='delivery'&&!me.addr.trim())return say('Enter a delivery address');
+  if(L.some(l=>l.n>l.p.stock)){return say('Some items are low in stock. Adjust your basket.')}
+  const low=[];L.forEach(l=>{l.p.stock-=l.n;if(l.p.stock<=LOW)low.push(l.p.name)});
+  const o={id:S.oid++,cust:{...me,addr:mode==='delivery'?me.addr:''},items:L.map(l=>({id:l.p.id,name:l.p.name,qty:l.n})),mode,total:c.total,status:'Placed',time:new Date().toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
+  S.orders.push(o);save();cart={};render();say('Order #'+o.id+' placed. Track it in Your orders.');
+ }
+});
+document.addEventListener('input',e=>{
+ if(e.target.id==='q'){q=e.target.value;grid()}
+ else if(e.target.dataset.me){me[e.target.dataset.me]=e.target.value}
+});
+document.addEventListener('change',e=>{
+ const t=e.target,c=t.dataset.c;if(!c)return;
+ if(c==='status'){const o=S.orders.find(o=>o.id==t.dataset.id);if(t.value==='Cancelled'){if(!confirm('Cancel this order and return items to stock?')){t.value=o.status;return}
+  o.items.forEach(i=>{const p=S.products.find(p=>p.id===i.id);if(p)p.stock+=i.qty})}o.status=t.value;save();render();say('Order #'+o.id+': '+o.status)}
+ else{const p=S.products.find(p=>p.id==t.dataset.id),n=Math.max(0,Math.round(+t.value)||0);if(c==='price'&&n<1){render();return}p[c]=n;save();render();if(c==='stock'&&n<=LOW)say(p.name+' is low on stock')}
+});
+render();
+</script></body></html>

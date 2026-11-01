@@ -1,0 +1,290 @@
+[
+ {
+  "id": "TC01",
+  "mod": "Customer",
+  "desc": "Product catalogue loads",
+  "steps": "Open the shop page",
+  "exp": "14 product cards displayed",
+  "act": "14 cards displayed",
+  "ok": true
+ },
+ {
+  "id": "TC02",
+  "mod": "Customer",
+  "desc": "Search by name",
+  "steps": "Type \"dal\" in the search box",
+  "exp": "Only \"Toor dal\" shown",
+  "act": "1 result: Toor dal",
+  "ok": true
+ },
+ {
+  "id": "TC03",
+  "mod": "Customer",
+  "desc": "Category filter",
+  "steps": "Tap the \"Dairy\" chip",
+  "exp": "3 dairy products (Milk, Eggs, Paneer)",
+  "act": "3 products shown",
+  "ok": true
+ },
+ {
+  "id": "TC04",
+  "mod": "Customer",
+  "desc": "Add item to basket",
+  "steps": "Tap \"Add to basket\" on Basmati rice, then \"+\"",
+  "exp": "Basket shows quantity 2 and items total ₹236",
+  "act": "Basket line \"× 2\", items total ₹236",
+  "ok": true
+ },
+ {
+  "id": "TC05",
+  "mod": "Customer",
+  "desc": "Stock limit in basket",
+  "steps": "Add Paneer (stock 6) nine times",
+  "exp": "Quantity capped at 6",
+  "act": "Quantity = 6",
+  "ok": true
+ },
+ {
+  "id": "TC06",
+  "mod": "Customer",
+  "desc": "Remove item from basket",
+  "steps": "Add rice twice, tap \"−\" once",
+  "exp": "Quantity becomes 1",
+  "act": "Quantity = 1",
+  "ok": true
+ },
+ {
+  "id": "TC07",
+  "mod": "Customer",
+  "desc": "Delivery fee below ₹500",
+  "steps": "Add rice (₹118), delivery mode",
+  "exp": "Fee ₹30, total ₹148",
+  "act": "Total ₹148 shown",
+  "ok": true
+ },
+ {
+  "id": "TC08",
+  "mod": "Customer",
+  "desc": "Free delivery from ₹500",
+  "steps": "Add Atta ×2 and Sugar ×1 (₹536)",
+  "exp": "Delivery fee ₹0, total ₹536",
+  "act": "Fee ₹0, total ₹536",
+  "ok": true
+ },
+ {
+  "id": "TC09",
+  "mod": "Customer",
+  "desc": "Pickup has no fee",
+  "steps": "Add rice, choose Store pickup",
+  "exp": "Fee ₹0, total ₹118, address field hidden",
+  "act": "Total ₹118, no address field",
+  "ok": true
+ },
+ {
+  "id": "TC10",
+  "mod": "Customer",
+  "desc": "Name is mandatory",
+  "steps": "Leave name empty, tap Place order",
+  "exp": "Message \"Enter your name\", no order",
+  "act": "Enter your name",
+  "ok": true
+ },
+ {
+  "id": "TC11",
+  "mod": "Customer",
+  "desc": "Phone validation",
+  "steps": "Enter phone \"98765\", place order",
+  "exp": "Message asking for 10-digit number",
+  "act": "Enter a 10-digit phone number",
+  "ok": true
+ },
+ {
+  "id": "TC12",
+  "mod": "Customer",
+  "desc": "Address required for delivery",
+  "steps": "Leave address empty in delivery mode",
+  "exp": "Message \"Enter a delivery address\"",
+  "act": "Enter a delivery address",
+  "ok": true
+ },
+ {
+  "id": "TC13",
+  "mod": "Customer",
+  "desc": "Place a valid order",
+  "steps": "Fill valid details, tap Place order",
+  "exp": "Order #1001 confirmed, basket cleared",
+  "act": "Order #1001 placed. Track it in Your orders.; basket cleared",
+  "ok": true
+ },
+ {
+  "id": "TC14",
+  "mod": "Customer",
+  "desc": "Stock reduces after order",
+  "steps": "Order 2 Paneer (stock 6)",
+  "exp": "Stock becomes 4",
+  "act": "Stock = 4",
+  "ok": true
+ },
+ {
+  "id": "TC15",
+  "mod": "Customer",
+  "desc": "Order appears in \"Your orders\"",
+  "steps": "Place order, view side panel",
+  "exp": "Order #1001 with status step \"Placed\" highlighted",
+  "act": "Order #1001 listed with status steps",
+  "ok": true
+ },
+ {
+  "id": "TC16",
+  "mod": "Customer",
+  "desc": "Out-of-stock item cannot be added",
+  "steps": "Set stock of rice to 0",
+  "exp": "Button disabled and \"Out of stock\" label",
+  "act": "Button disabled, \"Out of stock\" shown",
+  "ok": true
+ },
+ {
+  "id": "TC17",
+  "mod": "Admin",
+  "desc": "Low-stock alert banner",
+  "steps": "Open Store admin with default data",
+  "exp": "Banner lists Onions (9), Eggs (8), Paneer (6)",
+  "act": "Low stock: Onions (9), Eggs (8), Paneer (6)",
+  "ok": true
+ },
+ {
+  "id": "TC18",
+  "mod": "Admin",
+  "desc": "Add new product",
+  "steps": "Enter Jaggery, Staples, ₹80, 500 g, stock 25",
+  "exp": "Product count becomes 15",
+  "act": "Product count = 15",
+  "ok": true
+ },
+ {
+  "id": "TC19",
+  "mod": "Admin",
+  "desc": "Incomplete product rejected",
+  "steps": "Enter only a name, tap Add product",
+  "exp": "Validation message; count stays 14",
+  "act": "\"Fill name, category, price, unit and stock\"; count = 14",
+  "ok": true
+ },
+ {
+  "id": "TC20",
+  "mod": "Admin",
+  "desc": "Price update persists",
+  "steps": "Change rice price to ₹125, reload page",
+  "exp": "Price remains ₹125",
+  "act": "Price after reload = ₹125",
+  "ok": true
+ },
+ {
+  "id": "TC21",
+  "mod": "Admin",
+  "desc": "Stock edit updates shop",
+  "steps": "Set rice stock to 0, open shop",
+  "exp": "Rice shows \"Out of stock\"",
+  "act": "\"Out of stock\" shown",
+  "ok": true
+ },
+ {
+  "id": "TC22",
+  "mod": "Admin",
+  "desc": "Remove product",
+  "steps": "Tap Remove on Glucose biscuits",
+  "exp": "Product count becomes 13",
+  "act": "Product count = 13",
+  "ok": true
+ },
+ {
+  "id": "TC23",
+  "mod": "Admin",
+  "desc": "Status update visible to customer",
+  "steps": "Set order to \"Packed\", open shop",
+  "exp": "Two steps (Placed, Packed) highlighted",
+  "act": "2 steps highlighted",
+  "ok": true
+ },
+ {
+  "id": "TC24",
+  "mod": "Admin",
+  "desc": "Cancelled order restocks items",
+  "steps": "Order 2 Paneer, then cancel in admin",
+  "exp": "Stock 4 after order, 6 after cancel",
+  "act": "4 after order, 6 after cancel",
+  "ok": true
+ },
+ {
+  "id": "TC25",
+  "mod": "Admin",
+  "desc": "Customer records aggregate orders",
+  "steps": "Same customer places two orders",
+  "exp": "One row with 2 orders",
+  "act": "1 row; shows \"2\" orders",
+  "ok": true
+ },
+ {
+  "id": "TC26",
+  "mod": "System",
+  "desc": "Data persists across reload",
+  "steps": "Place order, refresh the page",
+  "exp": "Order still stored",
+  "act": "1 order in storage",
+  "ok": true
+ },
+ {
+  "id": "TC27",
+  "mod": "Admin",
+  "desc": "Pickup status flow",
+  "steps": "Place pickup order, open status list",
+  "exp": "Placed, Packed, Ready for pickup, Picked up, Cancelled",
+  "act": "Placed, Packed, Ready for pickup, Picked up, Cancelled",
+  "ok": true
+ },
+ {
+  "id": "TC28",
+  "mod": "System",
+  "desc": "Mobile layout (390 px)",
+  "steps": "Open page at 390 px width",
+  "exp": "No horizontal scrolling",
+  "act": "scrollWidth = 390px",
+  "ok": true
+ },
+ {
+  "id": "TC29",
+  "mod": "Security",
+  "desc": "HTML in product name is escaped",
+  "steps": "Add product named \"<b>Hack</b>\"",
+  "exp": "Shown as plain text, not bold",
+  "act": "Escaped (&lt;b&gt;)",
+  "ok": true
+ },
+ {
+  "id": "TC30",
+  "mod": "System",
+  "desc": "Order numbers increment",
+  "steps": "Place two orders in a row",
+  "exp": "IDs 1001 and 1002",
+  "act": "1001, 1002",
+  "ok": true
+ },
+ {
+  "id": "TC31",
+  "mod": "Admin",
+  "desc": "Completed order cannot be cancelled",
+  "steps": "Move a delivery order to \"Delivered\", open status list",
+  "exp": "\"Cancelled\" not offered",
+  "act": "Placed, Packed, Out for delivery, Delivered",
+  "ok": true
+ },
+ {
+  "id": "TC32",
+  "mod": "Customer",
+  "desc": "Pickup order stores no delivery address",
+  "steps": "Place a delivery order, then a pickup order for another customer",
+  "exp": "Address of the pickup order is empty",
+  "act": "Address is empty",
+  "ok": true
+ }
+]
