@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Apna Bazaar – Local Grocery</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#2F7D4F"><link rel="apple-touch-icon" href="icons/icon-192.png"><title>Apna Bazaar – Local Grocery</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#F2F5EF;--sf:#fff;--ink:#1D2B24;--mut:#5d6b63;--ln:#d9e1d6;--lf:#2F7D4F;--lfk:#fff;--tag:#F2C230;--tagk:#2a2200;--red:#C73E36;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -117,4 +117,5 @@ document.addEventListener('change',e=>{
  else{const p=S.products.find(p=>p.id==t.dataset.id),n=Math.max(0,Math.round(+t.value)||0);if(c==='price'&&n<1){render();return}p[c]=n;save();render();if(c==='stock'&&n<=LOW)say(p.name+' is low on stock')}
 });
 render();
+try{if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js')}catch(e){}
 </script></body></html>
